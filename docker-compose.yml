@@ -32,14 +32,13 @@ services:
         # type : 캐시의 종류
         # src : 캐시를 저장할 경로
         # mode : 캐시의 저장 방식 (max : 최대한 많은 캐시 데이터를 저장)
-        - type=local,dest=/tmp/.buildx-cache/backend,mode=max
+        - type=local,dest=/tmp/.buildx-cache/api,mode=max
       # 캐시를 불러올 경로
       cache_from:
         # src : 캐시 불러올 경로
-        - type=local,src=/tmp/.buildx-cache/backend
+        - type=local,src=/tmp/.buildx-cache/api
       dockerfile: Dockerfile
     image: ${DOCKER_USERNAME}/api-image:latest
-    # image: nodecrewbeemo/api-image:latest
     ports:
       - "8080:8080"
     networks:
@@ -56,6 +55,10 @@ services:
     container_name: client-container
     build:
       context: ./client
+      cache_to:
+        - type=local,dest=/tmp/.buildx-cache/client,mode=max
+      cache_from:
+        - type=local,src=/tmp/.buildx-cache/client
       dockerfile: Dockerfile
     image: ${DOCKER_USERNAME}/client:latest
     ports:
