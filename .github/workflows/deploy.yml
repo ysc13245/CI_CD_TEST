@@ -13,6 +13,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: run ssh-agent
+        uses: webfactory/ssh-agent@v0.9.0 # 어떤 액션을 사용할건지 작성
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+
+
+        # 원격 서버를 신뢰할 수 있는 서버로 등록하는 과정
+        # known_hosts : 원격 서버들의 지문이 저장된 파일
+      - name: Add Remote Server Fingerprint to Known Hosts
+        run: ssh-keyscan -H -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts || true
+
+      # 캐시 저장 설정을 위한 action(라이브러리)
+      - name: Cache Docker Image Layer
+        # actions/cache : 깃허브 캐시 저장소 활용을 위한 라이브러리
+        uses: actions/cache@v4.2.0
+        with:
+          # 캐시가 저장된 경로
+          path: /tmp/.buildx-cache
+          # 캐시의 이름 (캐시를 구별하기 위한 식별자)
+          key: docker-image-layer-cache-${{ github.sha }}
+          restore-keys: docker-image-layer-cache
+
       - name: Create .env file
         run: |
           echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> .env
@@ -22,11 +45,7 @@ jobs:
           echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}" >> .env
           echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
           echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
-
-        # 원격 서버를 신뢰할 수 있는 서버로 등록하는 과정
-        # known_hosts : 원격 서버들의 지문이 저장된 파일
-      - name: Add Remote Server Fingerprint to Known Hosts
-        run: ssh-keyscan -H -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts || true
+          echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
 
       - name: Login DockerHub
         run: echo '${{ secrets.DOCKER_PASSWORD}}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin

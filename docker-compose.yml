@@ -38,7 +38,7 @@ services:
         # src : 캐시 불러올 경로
         - type=local,src=/tmp/.buildx-cache/backend
       dockerfile: Dockerfile
-    image: ysc13245/api-image:latest
+    image: ${DOCKER_USERNAME}/api-image:latest
     # image: nodecrewbeemo/api-image:latest
     ports:
       - "8080:8080"
@@ -57,7 +57,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    image: ysc13245/client:latest
+    image: ${DOCKER_USERNAME}/client:latest
     ports:
       - "80:80"
       - "443:443"
