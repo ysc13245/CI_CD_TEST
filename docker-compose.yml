@@ -25,7 +25,7 @@ services:
   # # # 컨테이너명, Dockerfile 경로, 이미지명, 포트(선택), 네트워크, 환경변수파일, 의존관계
   api:
     container_name: api-container
-    build:
+    build: 
       # Dockerfile 경로
       context: ./api
       cache_to:
@@ -64,12 +64,14 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+    - /etc/letsencrypt/live/${DOMAIN}/fullchain.pem:/etc/letsencrypt/live/13.125.108.82/fullchain.pem:ro
+    - /etc/letsencrypt/live/${DOMAIN}/privkey.pem:/etc/letsencrypt/live/13.125.108.82/privkey.pem:ro
     networks:
       - api-network
     env_file:
       - .env
     depends_on:
-      - db
       - api
 
 # volumes와 networks 블록

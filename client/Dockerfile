@@ -28,6 +28,6 @@ COPY --from=build /app/dist/ /usr/share/nginx/html/
 
 # 포트 명시
 # 문서화 목적
-EXPOSE 80
+EXPOSE 80 443
 
 CMD ["nginx", "-g", "daemon off;"] 

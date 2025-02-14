@@ -20,10 +20,10 @@ jobs:
 
 
 
-        # 원격 서버를 신뢰할 수 있는 서버로 등록하는 과정
-        # known_hosts : 원격 서버들의 지문이 저장된 파일
-      - name: Add Remote Server Fingerprint to Known Hosts
-        run: ssh-keyscan -H -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts || true
+      #   # 원격 서버를 신뢰할 수 있는 서버로 등록하는 과정
+      #   # known_hosts : 원격 서버들의 지문이 저장된 파일
+      # - name: Add Remote Server Fingerprint to Known Hosts
+      #   run: ssh-keyscan -H -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts || true
 
       # 캐시 저장 설정을 위한 action(라이브러리)
       - name: Cache Docker Image Layer
@@ -76,7 +76,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "docker-compose.yml,.env"
+          source: "docker-compose.yml, .env"
           target: "~/github-actions-work-directory"
 
       - name: Pull Image & Up Container
