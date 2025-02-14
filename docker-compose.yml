@@ -65,8 +65,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-    - /etc/letsencrypt/live/13.125.108.82/fullchain.pem:/etc/letsencrypt/live/13.125.108.82.sslip.io/fullchain.pem
-    - /etc/letsencrypt/live/13.125.108.82/privkey.pem:/etc/letsencrypt/live/13.125.108.82.sslip.io/privkey.pem
+    - /etc/letsencrypt/live/13.125.108.82.sslip.io/fullchain.pem:/etc/letsencrypt/live/13.125.108.82.sslip.io/fullchain.pem
+    - /etc/letsencrypt/live/13.125.108.82.sslip.io/privkey.pem:/etc/letsencrypt/live/13.125.108.82.sslip.io/privkey.pem
     networks:
       - api-network
     env_file:
